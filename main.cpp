@@ -87,13 +87,16 @@ private slots:
         listWidget->repaint();
     }
 
-
     void removeTask() {
-        QListWidgetItem *currentItem = listWidget->currentItem();
-        if (currentItem) {
-            delete currentItem;
-        } else {
-            QMessageBox::warning(this, "Ошибка", "Пожалуйста, выберите задачу для удаления!");
+        QList<QListWidgetItem*> selectedItems = listWidget->findItems("", Qt::MatchContains);
+        for (QListWidgetItem* item : selectedItems) {
+            if (item->checkState() == Qt::Checked) {
+                delete item;
+            }
+        }
+
+        if (selectedItems.isEmpty()) {
+            QMessageBox::warning(this, "Ошибка", "Пожалуйста, выберите задачи для удаления!");
         }
     }
 
